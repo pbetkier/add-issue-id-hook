@@ -4,10 +4,20 @@ import subprocess
 import sys
 import re
 
-project = 'EXAMPLE'
+project = 'EXAMPLE'  # set to your project name in JIRA
+
 
 issue_pattern = '{}-[\d]+'.format(project)
-issue_format = '{}'
+issue_output_format = '{}'
+
+def read_current_message():
+    with open(sys.argv[1], 'r') as f:
+        return f.read()
+
+def write_message(message):
+    with open(sys.argv[1], 'w') as f:
+        f.write(message)
+
 
 try:
     current_ref = subprocess.check_output('git symbolic-ref HEAD', shell=True)
@@ -19,9 +29,8 @@ current_branch = current_ref[len('refs/heads/'):]
 
 issue_match = re.match(issue_pattern, current_branch)
 if issue_match:
-    with open(sys.argv[1], 'r') as f:
-        original_msg = f.read()
-    issue = issue_format.format(issue_match.group())
-    if not original_msg.startswith(issue):
-        with open(sys.argv[1], 'w') as f:
-            f.write('{0} {1}'.format(issue, original_msg))
+    issue_output = issue_output_format.format(issue_match.group())
+
+    original_message = read_current_message()
+    if not original_message.startswith(issue_output):
+        write_message('{0} {1}'.format(issue_output, original_message))

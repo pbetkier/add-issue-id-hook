@@ -13,7 +13,7 @@ class AddIssueIdHookTest(unittest.TestCase):
 
     def test_prepends_issue_id_from_branch_name_prefix_to_commit_message(self):
         # given
-        self.on_branch('EXAMPLE-1337_some_feature')
+        self.on_branch("EXAMPLE-1337_some_feature")
         self.with_changes_to_be_committed()
 
         # when
@@ -24,7 +24,7 @@ class AddIssueIdHookTest(unittest.TestCase):
 
     def test_doesnt_modify_commit_message_if_issue_id_not_in_branch_name(self):
         # given
-        self.on_branch('some_feature')
+        self.on_branch("some_feature")
         self.with_changes_to_be_committed()
 
         # when
@@ -35,7 +35,7 @@ class AddIssueIdHookTest(unittest.TestCase):
 
     def test_doesnt_modify_commit_message_if_issue_id_in_branch_name_but_not_as_prefix(self):
         # given
-        self.on_branch('some_EXAMPLE-1337_feature')
+        self.on_branch("some_EXAMPLE-1337_feature")
         self.with_changes_to_be_committed()
 
         # when
@@ -46,7 +46,7 @@ class AddIssueIdHookTest(unittest.TestCase):
 
     def test_doesnt_modify_commit_message_if_it_already_starts_with_issue_id(self):
         # given
-        self.on_branch('EXAMPLE-1337_some_feature')
+        self.on_branch("EXAMPLE-1337_some_feature")
         self.with_changes_to_be_committed()
 
         # when
@@ -77,7 +77,7 @@ class AddIssueIdHookTest(unittest.TestCase):
         self.execute('git commit -m "{}"'.format(message))
 
     def with_initial_commit(self):
-        self.on_branch('EXAMPLE-1337_some_feature')
+        self.on_branch("EXAMPLE-1337_some_feature")
         self.with_changes_to_be_committed()
         self.commit_with_message("Some commit")
 
@@ -88,7 +88,7 @@ class AddIssueIdHookTest(unittest.TestCase):
         return subprocess.check_output('; '.join(commands), shell=True)
 
     def assert_last_commit_message_is(self, expected):
-        self.assertEquals(self.execute('git log -1 --pretty=format:"%s"'), expected)
+        self.assertEqual(self.execute('git log -1 --pretty=format:"%s"'), expected)
 
     def tearDown(self):
         os.chdir('..')
