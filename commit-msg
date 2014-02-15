@@ -12,6 +12,7 @@ issue_format = '{}'
 try:
     current_ref = subprocess.check_output('git symbolic-ref HEAD', shell=True)
 except subprocess.CalledProcessError:
+    print("add-issue-id-hook: Adding issue id failed. Are you in detached HEAD state?")
     sys.exit()
 
 current_branch = current_ref[len('refs/heads/'):]
