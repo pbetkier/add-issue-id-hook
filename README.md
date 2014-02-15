@@ -12,7 +12,8 @@ Issue id is parsed from the current branch name and prepended to your commit mes
  - doesnt modify commit message if it already starts with issue id
  - doesnt modify commit message if issue id in branch name but not as prefix
  - doesnt modify commit message if in detached HEAD state
- - supports aborting a commit by providing empty message
+ - supports aborting a commit by providing an empty message
+ - supports aborting a commit by exiting from editor without making changes
 
 ## Installation
 1. Copy ``commit-msg`` file into ``.git/hooks/`` directory of your project's repository.

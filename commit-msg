@@ -18,6 +18,9 @@ def write_message(message):
     with open(sys.argv[1], 'w') as f:
         f.write(message)
 
+def contains_message(message):
+    return message and not message.lstrip().startswith("# Please enter the commit message for your changes.")
+
 
 try:
     current_ref = subprocess.check_output('git symbolic-ref HEAD', shell=True)
@@ -32,5 +35,5 @@ if issue_match:
     issue_output = issue_output_format.format(issue_match.group())
 
     original_message = read_current_message()
-    if original_message and not original_message.startswith(issue_output):
+    if contains_message(original_message) and not original_message.startswith(issue_output):
         write_message('{0} {1}'.format(issue_output, original_message))

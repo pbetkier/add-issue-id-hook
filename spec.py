@@ -67,7 +67,7 @@ class AddIssueIdHookTest(unittest.TestCase):
         # then
         self.assert_last_commit_message_is("Added some file.")
 
-    def test_supports_aborting_a_commit_by_providing_empty_message(self):
+    def test_supports_aborting_a_commit_by_providing_an_empty_message(self):
         # given
         self.on_branch("EXAMPLE-1337_some_feature")
         self.with_changes_to_be_committed()
@@ -78,14 +78,22 @@ class AddIssueIdHookTest(unittest.TestCase):
         # then
         self.assert_no_commits_made()
 
+    def test_supports_aborting_a_commit_by_exiting_from_editor_without_making_changes(self):
+        # given
+        self.on_branch("EXAMPLE-1337_some_feature")
+        self.with_changes_to_be_committed()
+
+        # then
+        self.commit_exiting_from_editor_without_changes()
+
+        # then
+        self.assert_no_commits_made()
+
     def on_branch(self, branch_name):
         self.execute('git checkout -b {}'.format(branch_name))
 
     def with_changes_to_be_committed(self):
         self.execute('echo . >> some_file', 'git add some_file')
-
-    def commit_with_message(self, message):
-        self.execute('git commit -m "{}"'.format(message))
 
     def with_initial_commit(self):
         self.on_branch("EXAMPLE-1337_some_feature")
@@ -94,6 +102,14 @@ class AddIssueIdHookTest(unittest.TestCase):
 
     def in_detached_head_state(self):
         self.execute('git checkout --detach')
+
+    def commit_with_message(self, message):
+        self.execute('git commit -m "{}"'.format(message))
+
+    def commit_exiting_from_editor_without_changes(self):
+        self.execute('git config core.editor vim')
+        self.execute('echo ":q" | git commit -a')
+        self.execute('git config --unset core.editor')
 
     def execute(self, *commands):
         try:
