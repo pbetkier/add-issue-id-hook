@@ -32,5 +32,5 @@ if issue_match:
     issue_output = issue_output_format.format(issue_match.group())
 
     original_message = read_current_message()
-    if not original_message.startswith(issue_output):
+    if original_message and not original_message.startswith(issue_output):
         write_message('{0} {1}'.format(issue_output, original_message))

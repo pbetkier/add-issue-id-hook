@@ -67,6 +67,17 @@ class AddIssueIdHookTest(unittest.TestCase):
         # then
         self.assert_last_commit_message_is("Added some file.")
 
+    def test_supports_aborting_a_commit_by_providing_empty_message(self):
+        # given
+        self.on_branch("EXAMPLE-1337_some_feature")
+        self.with_changes_to_be_committed()
+
+        # then
+        self.commit_with_message("")
+
+        # then
+        self.assert_no_commits_made()
+
     def on_branch(self, branch_name):
         self.execute('git checkout -b {}'.format(branch_name))
 
@@ -85,10 +96,16 @@ class AddIssueIdHookTest(unittest.TestCase):
         self.execute('git checkout --detach')
 
     def execute(self, *commands):
-        return subprocess.check_output('; '.join(commands), shell=True)
+        try:
+            return subprocess.check_output('; '.join(commands), shell=True)
+        except subprocess.CalledProcessError as e:
+            print(e)
 
     def assert_last_commit_message_is(self, expected):
         self.assertEqual(self.execute('git log -1 --pretty=format:"%s"'), expected)
+
+    def assert_no_commits_made(self):
+        self.assertEqual(self.execute('git branch'), '')
 
     def tearDown(self):
         os.chdir('..')
