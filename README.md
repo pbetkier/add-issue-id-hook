@@ -3,8 +3,18 @@
 ## What is it?
 Git commit hook for adding related JIRA issue id to commit messages. 
 
-## How it works?
-Issue id is parsed from the current branch name and prepended to your commit message. Here's the specification from ``spec.py`` tests:
+## How does it work?
+Issue id is parsed from the current branch name and prepended to your commit message.
+
+
+    $ git checkout -b ADD-12-new-feature
+    $ git add some_code.py
+    $ git commit -m "Added some pretty code."
+    $ git log
+        ...
+        ADD-12 Added some pretty code.
+
+Here's the specification from ``spec.py`` tests:
 
 #### AddIssueIdHook:
  - prepends issue id from branch name prefix to commit message
