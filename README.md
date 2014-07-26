@@ -1,20 +1,20 @@
 # Add issue id hook
 
 ## What is it?
-Git commit hook for adding related JIRA issue id to commit messages. 
+Git commit hook for adding related JIRA issue ids to commit messages.
 
 ## How does it work?
 Issue id is parsed from the current branch name and prepended to your commit message.
 
 
-    $ git checkout -b ADD-12-new-feature
+    $ git checkout -b EXAMPLE-123-new-feature
     $ git add some_code.py
     $ git commit -m "Added some pretty code."
     $ git log
         ...
-        ADD-12 Added some pretty code.
+        EXAMPLE-123 Added some pretty code.
 
-Here's the specification from ``spec.py`` tests:
+Here's the specification generated from ``spec.py`` tests:
 
 #### AddIssueIdHook:
  - prepends issue id from branch name to commit message
@@ -29,8 +29,13 @@ Here's the specification from ``spec.py`` tests:
 ## Installation
 1. Copy ``commit-msg`` file into ``.git/hooks/`` directory of your project's repository.
 1. Open the newly created copy of ``commit-msg`` file and set ``project`` variable according to your project's name in JIRA.
+1. Make sure the ``commit-msg`` file has execution mode flag set (``chmod +x commit-msg``).
 
 This plugin requires having Python 2.7 installed.
+
+### Not a JIRA project?
+
+This hook supports JIRA issue ids by default, but you can easily customize it to support any other issue id patterns. Simply change the ``issue_pattern`` variable to a regular expression that matches the issue ids from your ticket system.
 
 ## Known limitations
 As this commit hook depends on parsing the current branch name, it won't work when committing in detached HEAD state, e.g. when doing a *reword* operation during ``git rebase --interactive``.
