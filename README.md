@@ -17,7 +17,8 @@ Issue id is parsed from the current branch name and prepended to your commit mes
 Here's the specification from ``spec.py`` tests:
 
 #### AddIssueIdHook:
- - prepends issue id from branch name prefix to commit message
+ - prepends issue id from branch name to commit message
+ - prepends first matching issue id to commit message if multiple ids in branch name exist
  - doesnt modify commit message if issue id not in branch name
  - doesnt modify commit message if it already starts with issue id
  - doesnt modify commit message if issue id in branch name but not as prefix

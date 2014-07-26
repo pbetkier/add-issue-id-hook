@@ -30,7 +30,7 @@ except subprocess.CalledProcessError:
 
 current_branch = current_ref[len('refs/heads/'):]
 
-issue_match = re.match(issue_pattern, current_branch)
+issue_match = re.search(issue_pattern, current_branch)
 if issue_match:
     issue_output = issue_output_format.format(issue_match.group())
 
