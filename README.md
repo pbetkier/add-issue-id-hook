@@ -1,6 +1,5 @@
 # Add issue id hook [![Build Status](https://travis-ci.org/pbetkier/add-issue-id-hook.svg?branch=master)](https://travis-ci.org/pbetkier/add-issue-id-hook)
 
-## What is it?
 Git commit hook for adding related JIRA issue ids to commit messages.
 
 ## How does it work?
@@ -31,7 +30,7 @@ Here's the specification generated from ``spec.py`` tests:
 1. Open the newly created copy of ``commit-msg`` file and set ``project`` variable according to your project's name in JIRA.
 1. Make sure the ``commit-msg`` file has execution mode flag set (``chmod +x commit-msg``).
 
-This plugin requires having Python 2.7 installed.
+This plugin requires having Python 2.7 installed (comes pre-installed on OS X and Ubuntu).
 
 ### Not a JIRA project?
 
