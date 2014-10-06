@@ -1,4 +1,4 @@
-# Add issue id hook
+# Add issue id hook [![Build Status](https://travis-ci.org/pbetkier/add-issue-id-hook.svg?branch=master)](https://travis-ci.org/pbetkier/add-issue-id-hook)
 
 ## What is it?
 Git commit hook for adding related JIRA issue ids to commit messages.
