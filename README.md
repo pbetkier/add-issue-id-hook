@@ -20,7 +20,6 @@ Here's the specification generated from ``spec.py`` tests:
  - prepends first matching issue id to commit message if multiple ids in branch name exist
  - doesnt modify commit message if issue id not in branch name
  - doesnt modify commit message if it already starts with issue id
- - doesnt modify commit message if issue id in branch name but not as prefix
  - doesnt modify commit message if in detached HEAD state
  - supports aborting a commit by providing an empty message
  - supports aborting a commit by exiting from editor without making changes
