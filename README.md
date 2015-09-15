@@ -31,6 +31,13 @@ Here's the specification generated from ``spec.py`` tests:
 
 This plugin requires having Python 2.7 installed (comes pre-installed on OS X and Ubuntu).
 
+### Global installation
+
+It's possible to apply this hook to every newly cloned or initialized repository using git's [template directory](http://git-scm.com/docs/git-init#_template_directory) feature:
+
+1. Create a directory for your git templates and put this ``commit-msg`` script into it, e.g. into ``~/.git-templates/hooks/commit-msg``.
+2. Configure git to use your template directory when initializing repositories: ``git config --global init.templatedir ~/.git-templates``.
+
 ### Not a JIRA project?
 
 This hook supports JIRA issue ids by default, but you can easily customize it to support any other issue id patterns. Simply change the ``issue_pattern`` variable to a regular expression that matches the issue ids from your ticket system.
