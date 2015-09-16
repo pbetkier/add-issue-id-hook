@@ -1,19 +1,26 @@
 #!/usr/bin/env python
 
-# add-issue-id-hook version 1.0.0
+# add-issue-id-hook version 1.0.1-SNAPSHOT
 #
 # Created by Piotr Betkier
 # https://github.com/pbetkier/add-issue-id-hook
 
+# customize the final commit message using placeholders:
+#  - {issue_id} replaced with discovered issue id
+#  - {user_message} replaced with message provided by the user
+commit_message_format = '{issue_id} {user_message}'
+
+# you may set this to your custom JIRA project key format
+# or explicitly specify a single project name, e.g. 'EXAMPLE'
+project_format = '[A-Z][A-Z]+'  
+
+# if not using JIRA, set this to your ticket system's issue pattern
+issue_pattern = '{}-[\d]+'.format(project_format)
+
+
 import subprocess
 import sys
 import re
-
-project = 'EXAMPLE'  # set to your project name in JIRA
-
-
-issue_pattern = '{}-[\d]+'.format(project)
-issue_output_format = '{}'
 
 def read_current_message():
     with open(sys.argv[1], 'r') as f:
@@ -24,21 +31,24 @@ def write_message(message):
         f.write(message)
 
 def contains_message(message):
-    return message and not message.lstrip().startswith("# Please enter the commit message for your changes.")
+    return message and not message.isspace()
+
+def remove_editor_help_message(message):
+    return message[:message.find("# Please enter the commit message for your changes.")].rstrip()
+
+def read_branch_or_exit():
+    try:
+        current_ref = subprocess.check_output('git symbolic-ref HEAD', shell=True)
+        return current_ref[len('refs/heads/'):]
+    except subprocess.CalledProcessError:
+        print("add-issue-id-hook: Adding issue id failed. Are you in detached HEAD state?")
+        sys.exit()
 
 
-try:
-    current_ref = subprocess.check_output('git symbolic-ref HEAD', shell=True)
-except subprocess.CalledProcessError:
-    print("add-issue-id-hook: Adding issue id failed. Are you in detached HEAD state?")
-    sys.exit()
+issue_id_match = re.search(issue_pattern, read_branch_or_exit())
+if issue_id_match:
+    found_issue_id = issue_id_match.group()
+    user_message = remove_editor_help_message(read_current_message())
 
-current_branch = current_ref[len('refs/heads/'):]
-
-issue_match = re.search(issue_pattern, current_branch)
-if issue_match:
-    issue_output = issue_output_format.format(issue_match.group())
-
-    original_message = read_current_message()
-    if contains_message(original_message) and not original_message.startswith(issue_output):
-        write_message('{0} {1}'.format(issue_output, original_message))
+    if contains_message(user_message) and found_issue_id not in user_message:
+        write_message(commit_message_format.format(issue_id=found_issue_id, user_message=user_message))

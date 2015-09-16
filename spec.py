@@ -32,6 +32,17 @@ class AddIssueIdHookTest(unittest.TestCase):
 
         # then
         self.assert_last_commit_message_is("EXAMPLE-1337 Added some file.")
+        
+    def test_prepends_issue_id_to_commit_message_when_message_contains_a_different_issue_id(self):
+        # given
+        self.on_branch("EXAMPLE-1337_some_feature")
+        self.with_changes_to_be_committed()
+
+        # when
+        self.commit_with_message("Added some file fixing problems in EXAMPLE-99.")
+
+        # then
+        self.assert_last_commit_message_is("EXAMPLE-1337 Added some file fixing problems in EXAMPLE-99.")
 
     def test_doesnt_modify_commit_message_if_issue_id_not_in_branch_name(self):
         # given
@@ -44,7 +55,7 @@ class AddIssueIdHookTest(unittest.TestCase):
         # then
         self.assert_last_commit_message_is("Added some file.")
 
-    def test_doesnt_modify_commit_message_if_it_already_starts_with_issue_id(self):
+    def test_doesnt_modify_commit_message_if_it_already_contains_this_issue_id(self):
         # given
         self.on_branch("EXAMPLE-1337_some_feature")
         self.with_changes_to_be_committed()

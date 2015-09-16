@@ -18,15 +18,15 @@ Here's the specification generated from ``spec.py`` tests:
 #### AddIssueIdHook:
  - prepends issue id from branch name to commit message
  - prepends first matching issue id to commit message if multiple ids in branch name exist
+ - prepends issue id to commit message when message contains a different issue id
  - doesnt modify commit message if issue id not in branch name
- - doesnt modify commit message if it already starts with issue id
+ - doesnt modify commit message if it already contains this issue id
  - doesnt modify commit message if in detached HEAD state
  - supports aborting a commit by providing an empty message
  - supports aborting a commit by exiting from editor without making changes
 
 ## Installation
 1. Copy ``commit-msg`` file into ``.git/hooks/`` directory of your project's repository.
-1. Open the newly created copy of ``commit-msg`` file and set ``project`` variable according to your project's name in JIRA.
 1. Make sure the ``commit-msg`` file has execution mode flag set (``chmod +x commit-msg``).
 
 This plugin requires having Python 2.7 installed (comes pre-installed on OS X and Ubuntu).
@@ -38,9 +38,22 @@ It's possible to apply this hook to every newly cloned or initialized repository
 1. Create a directory for your git templates and put this ``commit-msg`` script into it, e.g. into ``~/.git-templates/hooks/commit-msg``.
 2. Configure git to use your template directory when initializing repositories: ``git config --global init.templatedir ~/.git-templates``.
 
-### Not a JIRA project?
+### Customizations
 
-This hook supports JIRA issue ids by default, but you can easily customize it to support any other issue id patterns. Simply change the ``issue_pattern`` variable to a regular expression that matches the issue ids from your ticket system.
+Customizations are supported by opening your copy of ``commit-msg`` file and adjusting the configuration variables.
+
+#### Commit message format
+
+Provide your commit message formatting by changing ``commit_message_format`` variable.
+
+#### JIRA project key pattern
+
+By default, issue ids matching the default JIRA project key pattern are discovered. You can customize the project key pattern or explicitly specify the project key to look for by adjusting ``project_format`` variable.
+
+#### Not a JIRA project?
+
+JIRA issue ids are supported by default, but the hook can support any other issue id patterns. Simply change the ``issue_pattern`` variable to a regular expression that matches the issue ids from your ticket system.
 
 ## Known limitations
 As this commit hook depends on parsing the current branch name, it won't work when committing in detached HEAD state, e.g. when doing a *reword* operation during ``git rebase --interactive``.
+
