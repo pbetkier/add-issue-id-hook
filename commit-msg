@@ -38,7 +38,7 @@ def remove_editor_help_message(message):
 
 def read_branch_or_exit():
     try:
-        current_ref = subprocess.check_output('git symbolic-ref HEAD', shell=True)
+        current_ref = subprocess.check_output('git symbolic-ref HEAD', shell=True).decode()
         return current_ref[len('refs/heads/'):]
     except subprocess.CalledProcessError:
         print("add-issue-id-hook: Adding issue id failed. Are you in detached HEAD state?")
