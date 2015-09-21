@@ -124,7 +124,7 @@ class AddIssueIdHookTest(unittest.TestCase):
 
     def execute(self, *commands):
         try:
-            return subprocess.check_output('; '.join(commands), shell=True)
+            return subprocess.check_output('; '.join(commands), shell=True).decode()
         except subprocess.CalledProcessError as e:
             print(e)
 
