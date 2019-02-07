@@ -26,10 +26,19 @@ Here's the specification generated from ``spec.py`` tests:
  - supports aborting a commit by exiting from editor without making changes
 
 ## Installation
+
+### Manual
 1. Copy ``commit-msg`` file into ``.git/hooks/`` directory of your project's repository.
 1. Make sure the ``commit-msg`` file has execution mode flag set (``chmod +x commit-msg``).
 
 This plugin requires having Python 2.x or Python 3.x installed (comes pre-installed on OS X and Ubuntu). Verified against versions 2.7 and 3.4.
+
+### One-liner
+
+```bash
+cd my-repo
+curl https://raw.githubusercontent.com/pbetkier/add-issue-id-hook/master/commit-msg -o ./.git/hooks/commit-msg && chmod +x ./.git/hooks/commit-msg
+```
 
 ### Global installation
 
