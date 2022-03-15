@@ -1,0 +1,10 @@
+# This file tells https://pre-commit.com/
+# which hooks are provided by this repo
+# for use by other git repos.
+
+-  id: add-issue-id
+   name: Add Issue ID to message
+   description: Prepend ticket-ID in commit message
+   entry: add-issue-id-hook
+   language: python
+   stages: [prepare-commit-msg, commit-msg]

@@ -8,7 +8,7 @@ import unittest
 class AddIssueIdHookTest(unittest.TestCase):
 
     def setUp(self):
-        self.execute('git init tmp_repo', 'cp commit-msg tmp_repo/.git/hooks/.')
+        self.execute('git init tmp_repo', 'cp add-issue-id.py tmp_repo/.git/hooks/commit-msg')
         os.chdir('tmp_repo')
 
     def test_prepends_issue_id_from_branch_name_to_commit_message(self):

@@ -12,7 +12,7 @@ commit_message_format = '{issue_id} {user_message}'
 
 # you may set this to your custom JIRA project key format
 # or explicitly specify a single project name, e.g. 'EXAMPLE'
-project_format = '[A-Z][A-Z]+'  
+project_format = '[A-Z]+'  
 
 # if not using JIRA, set this to your ticket system's issue pattern
 issue_pattern = '{}-[\d]+'.format(project_format)
@@ -21,13 +21,14 @@ issue_pattern = '{}-[\d]+'.format(project_format)
 import subprocess
 import sys
 import re
+from typing import List
 
-def read_current_message():
-    with open(sys.argv[1], 'r') as f:
+def read_current_message(args: List[str]):
+    with open(args[1], 'r') as f:
         return f.read()
 
-def write_message(message):
-    with open(sys.argv[1], 'w') as f:
+def write_message(args: List[str], message):
+    with open(args[1], 'w') as f:
         f.write(message)
 
 def contains_message(message):
@@ -44,11 +45,14 @@ def read_branch_or_exit():
         print("add-issue-id-hook: Adding issue id failed. Are you in detached HEAD state?")
         sys.exit()
 
+def main(argv: List[str] = sys.argv) -> int:
+    issue_id_match = re.search(issue_pattern, read_branch_or_exit())
+    if issue_id_match:
+        found_issue_id = issue_id_match.group()
+        user_message = remove_editor_help_message(read_current_message(argv))
 
-issue_id_match = re.search(issue_pattern, read_branch_or_exit())
-if issue_id_match:
-    found_issue_id = issue_id_match.group()
-    user_message = remove_editor_help_message(read_current_message())
+        if contains_message(user_message) and found_issue_id not in user_message:
+            write_message(argv, commit_message_format.format(issue_id=found_issue_id, user_message=user_message))
 
-    if contains_message(user_message) and found_issue_id not in user_message:
-        write_message(commit_message_format.format(issue_id=found_issue_id, user_message=user_message))
+if __name__ == "__main__":
+    main()
