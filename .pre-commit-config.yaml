@@ -1,0 +1,22 @@
+fail_fast: false
+default_stages: [commit]
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.1.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-docstring-first
+    -   id: check-yaml
+    -   id: debug-statements
+    -   id: double-quote-string-fixer
+    -   id: name-tests-test
+    -   id: requirements-txt-fixer
+  - repo: https://github.com/kaamos1/add-issue-id-hook.git
+    rev: ccbc68f5cc2efd1410c65462ded4830099dc9d71
+    hooks:
+      - id: add-issue-id
+        name: Prepend issue ID to commit message
+        language: python
+        stages: [commit-msg]

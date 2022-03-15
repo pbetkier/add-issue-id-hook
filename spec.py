@@ -8,63 +8,63 @@ import unittest
 class AddIssueIdHookTest(unittest.TestCase):
 
     def setUp(self):
-        self.execute('git init tmp_repo', 'cp add-issue-id.py tmp_repo/.git/hooks/commit-msg')
+        self.execute('git init tmp_repo', 'cp add_issue_id.py tmp_repo/.git/hooks/commit-msg')
         os.chdir('tmp_repo')
 
     def test_prepends_issue_id_from_branch_name_to_commit_message(self):
         # given
-        self.on_branch("some_EXAMPLE-1337_feature")
+        self.on_branch('some_EXAMPLE-1337_feature')
         self.with_changes_to_be_committed()
 
         # when
-        self.commit_with_message("Added some file.")
+        self.commit_with_message('Added some file.')
 
         # then
-        self.assert_last_commit_message_is("EXAMPLE-1337 Added some file.")
+        self.assert_last_commit_message_is('EXAMPLE-1337 Added some file.')
 
     def test_prepends_first_matching_issue_id_to_commit_message_if_multiple_ids_in_branch_name_exist(self):
         # given
-        self.on_branch("some_EXAMPLE-1337_feature_EXAMPLE-99")
+        self.on_branch('some_EXAMPLE-1337_feature_EXAMPLE-99')
         self.with_changes_to_be_committed()
 
         # when
-        self.commit_with_message("Added some file.")
+        self.commit_with_message('Added some file.')
 
         # then
-        self.assert_last_commit_message_is("EXAMPLE-1337 Added some file.")
-        
+        self.assert_last_commit_message_is('EXAMPLE-1337 Added some file.')
+
     def test_prepends_issue_id_to_commit_message_when_message_contains_a_different_issue_id(self):
         # given
-        self.on_branch("EXAMPLE-1337_some_feature")
+        self.on_branch('EXAMPLE-1337_some_feature')
         self.with_changes_to_be_committed()
 
         # when
-        self.commit_with_message("Added some file fixing problems in EXAMPLE-99.")
+        self.commit_with_message('Added some file fixing problems in EXAMPLE-99.')
 
         # then
-        self.assert_last_commit_message_is("EXAMPLE-1337 Added some file fixing problems in EXAMPLE-99.")
+        self.assert_last_commit_message_is('EXAMPLE-1337 Added some file fixing problems in EXAMPLE-99.')
 
     def test_doesnt_modify_commit_message_if_issue_id_not_in_branch_name(self):
         # given
-        self.on_branch("some_feature")
+        self.on_branch('some_feature')
         self.with_changes_to_be_committed()
 
         # when
-        self.commit_with_message("Added some file.")
+        self.commit_with_message('Added some file.')
 
         # then
-        self.assert_last_commit_message_is("Added some file.")
+        self.assert_last_commit_message_is('Added some file.')
 
     def test_doesnt_modify_commit_message_if_it_already_contains_this_issue_id(self):
         # given
-        self.on_branch("EXAMPLE-1337_some_feature")
+        self.on_branch('EXAMPLE-1337_some_feature')
         self.with_changes_to_be_committed()
 
         # when
-        self.commit_with_message("EXAMPLE-1337 Added some file.")
+        self.commit_with_message('EXAMPLE-1337 Added some file.')
 
         # then
-        self.assert_last_commit_message_is("EXAMPLE-1337 Added some file.")
+        self.assert_last_commit_message_is('EXAMPLE-1337 Added some file.')
 
     def test_doesnt_modify_commit_message_if_in_detached_HEAD_state(self):
         # given
@@ -73,25 +73,25 @@ class AddIssueIdHookTest(unittest.TestCase):
         self.with_changes_to_be_committed()
 
         # when
-        self.commit_with_message("Added some file.")
+        self.commit_with_message('Added some file.')
 
         # then
-        self.assert_last_commit_message_is("Added some file.")
+        self.assert_last_commit_message_is('Added some file.')
 
     def test_supports_aborting_a_commit_by_providing_an_empty_message(self):
         # given
-        self.on_branch("EXAMPLE-1337_some_feature")
+        self.on_branch('EXAMPLE-1337_some_feature')
         self.with_changes_to_be_committed()
 
         # when
-        self.commit_with_message("")
+        self.commit_with_message('')
 
         # then
         self.assert_no_commits_made()
 
     def test_supports_aborting_a_commit_by_exiting_from_editor_without_making_changes(self):
         # given
-        self.on_branch("EXAMPLE-1337_some_feature")
+        self.on_branch('EXAMPLE-1337_some_feature')
         self.with_changes_to_be_committed()
 
         # when
@@ -107,9 +107,9 @@ class AddIssueIdHookTest(unittest.TestCase):
         self.execute('echo . >> some_file', 'git add some_file')
 
     def with_initial_commit(self):
-        self.on_branch("EXAMPLE-1337_some_feature")
+        self.on_branch('EXAMPLE-1337_some_feature')
         self.with_changes_to_be_committed()
-        self.commit_with_message("Some commit")
+        self.commit_with_message('Some commit')
 
     def in_detached_head_state(self):
         self.execute('git checkout --detach')
