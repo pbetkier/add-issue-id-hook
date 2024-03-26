@@ -31,7 +31,7 @@ Here's the specification generated from ``spec.py`` tests:
 1. Copy ``commit-msg`` file into ``.git/hooks/`` directory of your project's repository.
 1. Make sure the ``commit-msg`` file has execution mode flag set (``chmod +x commit-msg``).
 
-This plugin requires having Python 2.x or Python 3.x installed (comes pre-installed on OS X and Ubuntu). Verified against versions 2.7 and 3.4.
+This plugin requires having Python 3.x installed (comes pre-installed on OS X and Ubuntu). Verified against versions 3.4 and 3.12.
 
 ### One-liner
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # add-issue-id-hook version 1.1.0
 #
@@ -15,7 +15,7 @@ commit_message_format = '{issue_id} {user_message}'
 project_format = '[A-Z][A-Z]+'  
 
 # if not using JIRA, set this to your ticket system's issue pattern
-issue_pattern = '{}-[\d]+'.format(project_format)
+issue_pattern = r'{}-[\d]+'.format(project_format)
 
 
 import subprocess

@@ -1,7 +1,7 @@
 language: python
-python: 
-- "2.7"
+python:
 - "3.4"
+- "3.12"
 install: true
 before_install:
   - sudo apt-get install -y vim
